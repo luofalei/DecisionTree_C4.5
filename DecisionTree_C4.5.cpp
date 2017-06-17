@@ -12,16 +12,20 @@ using namespace std;
 // http://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
 
 // trim from start
-static inline std::string &ltrim(std::string &s) {
-	s.erase(s.begin(), std::find_if(s.begin(), s.end(),
-																	std::not1(std::ptr_fun<int, int>(std::isspace))));
+static inline std::string &ltrim(std::string &s)
+{
+    s.erase(remove(s.begin(), s.begin() + 2, ' '), s.begin() + 2);
+    // s.erase(s.begin(), std::find_if(s.begin(), s.end(),
+    //     std::not1(std::ptr_fun<int, int>(std::isspace))));
 	return s;
 }
 
 // trim from end
 static inline std::string &rtrim(std::string &s) {
-	s.erase(std::find_if(s.rbegin(), s.rend(),
-											 std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
+
+    s.erase(remove(s.end() - 1, s.end(), ' '), s.end());
+    // s.erase(std::find_if(s.rbegin(), s.rend(),
+    //     std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
 	return s;
 }
 
@@ -746,7 +750,7 @@ void DisplayVector(vector < string > The_Vector)
 int main(int argc, char const* argv[])
 {
   MatrixCls Matrix(argv[1]);
-  TreeCls * Tree;
+  TreeCls * Tree = new TreeCls;
   Tree = Tree->BuildTree(Tree, Matrix);
   Tree->Display();
   vector < string > Test_Scores = Tree->TestTree(Matrix);
@@ -756,4 +760,5 @@ int main(int argc, char const* argv[])
   Test_String.erase(Test_String.begin()+0);
   //cout << sizeof(Test_String.begin()) << endl;
   DisplayVector(Test_String);
+  delete Tree;
 }
